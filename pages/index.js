@@ -32,7 +32,7 @@ const ProductsContainer = styled.div`
 
 const Price = styled.div`
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 0.5rem;
   right: 0.5rem;
   font-size: 1.5rem;
   background: #C1657D;

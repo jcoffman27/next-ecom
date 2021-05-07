@@ -43,7 +43,7 @@ const Navbar = () => {
     <Nav>
       <NavContainer>
         <Link href="/">
-          <UnstyledLink>Ecom Name</UnstyledLink>
+          <UnstyledLink>Coffman Art Studio</UnstyledLink>
         </Link>
         <ShoppingCart onClick={handleClick}/>
       </NavContainer>
