@@ -1,5 +1,6 @@
 const fs = require('fs');
 const matter = require('gray-matter')
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const getProducts = () => {
   const directory =  `${process.cwd()}/content`
@@ -35,12 +36,32 @@ exports.handler = async (event, context) => {
   console.log(cartWithProducts)
   
   //Talking to Stripe
+  const lineItems = cartWithProducts.map((product) => ({
+    price_data: {
+      currency: "usd",
+      product_data:{
+        name: product.name,
+      },
+      unit_amount: product.price,
+    },
+    quantity: product.qty,
+  }));
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: lineItems,
+    mode: "payment",
+    success_url: `${process.env.URL}/success`,
+    cancel_url:  `${process.env.URL}/cancelled`,
+  });
 
   //Charging the card
 
   //What we send back as a response
   return{
     statusCode: 200,
-    body: "Payment Successful!"
+    body: JSON.stringify({
+      id: session.id,
+    }),
   }
 }
